@@ -1,0 +1,51 @@
+services:
+  api:
+    build: .
+    container_name: wishlist-user-profile
+    depends_on:
+      - db
+      - migrate
+    env_file:
+      - .env
+    ports:
+      - "8081:8080"
+    restart: always
+    networks:
+      - wishlist-net
+
+  db:
+    image: postgres:16
+    container_name: user-profiles-postgres
+    env_file:
+      .env
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    restart: always
+    networks:
+      - wishlist-net
+
+  migrate:
+    image: migrate/migrate:v4.16.0
+    container_name: user-profile-migrate
+    depends_on:
+      - db
+    env_file:
+      - .env
+    command: [
+      "-path=/migrations",
+      "-database=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}?sslmode=${POSTGRES_SSL_MODE}",
+      "up"
+    ]
+    volumes:
+      - ./db/migrations:/migrations
+    networks:
+      - wishlist-net
+
+volumes:
+  pg_data:
+
+networks:
+  wishlist-net:
+    external: true
