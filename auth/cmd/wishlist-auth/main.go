@@ -25,11 +25,11 @@ func main() {
 		log.Fatalf("failed to connect to postgres: %v", err)
 	}
 
-	userRepo := repository.NewUserRepository(db)
+	userRepo := repository.NewUserRepositoryPostgres(db)
 	refreshTokenRepo := repository.NewRefreshTokenRepositoryDb(db)
 
 	passwordHashService := service.NewPasswordHashService()
-	jwtTokenService := service.NewJwtTokenService()
+	jwtTokenService := service.NewJwtService()
 
 	userRegisteredEventPublisher := publisher.NewUserRegisteredEventPublisher()
 

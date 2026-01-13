@@ -25,7 +25,7 @@ func main() {
 		log.Fatalf("Error connecting to database: %v", err)
 	}
 
-	userProfileRepo := repository.NewUserProfileRepositoryDb(sqlDb)
+	userProfileRepo := repository.NewUserProfileRepositoryPostgres(sqlDb)
 
 	createProfileUsecase := usecase.NewCreateUserProfileUseCase(userProfileRepo)
 	getProfileUsecase := usecase.NewGetUserProfileUseCase(userProfileRepo)

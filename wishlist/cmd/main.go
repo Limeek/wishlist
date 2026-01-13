@@ -17,8 +17,8 @@ func main() {
 		log.Fatalf("failed to connect to postgres: %v", err)
 	}
 
-	wishlistRepo := repository.NewWishlistRepositoryDb(db)
-	itemRepo := repository.NewItemRepository(db)
+	wishlistRepo := repository.NewWishlistRepositoryPostgres(db)
+	itemRepo := repository.NewItemRepositoryPostgres(db)
 
 	createItemUseCase := usecase.NewCreateItemUseCase(itemRepo, wishlistRepo)
 	createWishlistUseCase := usecase.NewCreateWishlistUseCase(wishlistRepo)
